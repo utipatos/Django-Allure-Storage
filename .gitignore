@@ -1,0 +1,7 @@
+.idea
+*.pyc
+.pytest_cache
+
+# Ignore env
+.env
+/venv/
