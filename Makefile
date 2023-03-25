@@ -1,4 +1,4 @@
-NAME=polity-vault-service
+NAME=django-allure-service
 
 # COLORS
 GREEN  := $(shell tput -Txterm setaf 2)
@@ -36,21 +36,20 @@ help:
 run: ## Run as a background service
 	docker-compose down
 	docker-compose up --build allure-server
-	make makemigrations
 	make migrate
 	make docker-superuser
 
-## Applies migrations to the polity_vault database
+## Applies migrations
 migrate:
 	@echo "Migrating database..."
 	@docker-compose exec allure-server python3 manage.py migrate
 
-## Makes migrations for the polity_vault database
+## Makes migrations
 makemigrations:
 	@echo "Making migrations..."
 	@docker-compose exec allure-server python3 manage.py makemigrations
 
-## Create super user for polity_vault
+## Create super user
 docker-superuser:
 	@echo "Creating super user..."
 	@docker-compose exec allure-server python3 manage.py createsuperuser --noinput
