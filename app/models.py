@@ -11,3 +11,12 @@ class AllureResult(models.Model):
     path = models.FileField()
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+
+
+class AllureReport(models.Model):
+    service_name = models.CharField(max_length=100)
+    result_id = models.CharField(max_length=100)
+    env = models.CharField(max_length=20)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+    path = models.CharField(max_length=100)

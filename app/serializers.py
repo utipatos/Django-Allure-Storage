@@ -1,5 +1,6 @@
 import logging
 import os
+import shutil
 import uuid
 
 from django.core.files.uploadedfile import UploadedFile
@@ -7,7 +8,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework import serializers
 
-from app.models import AllureResult
+from app.models import AllureResult, AllureReport
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +19,7 @@ class AllureResultsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AllureResult
-        fields = ('path', 'id', )
+        fields = ('id', 'path',)
 
     def create(self, validated_data):
         path = validated_data.get('path', None)
@@ -26,7 +27,35 @@ class AllureResultsSerializer(serializers.ModelSerializer):
         instance = super(AllureResultsSerializer, self).create(validated_data)
 
         if path:
-            instance.path.save(f"static/results/{instance.id}/{path.name}", path)
+            new_path = f"static/results/{instance.id}/{path.name}"
+            instance.path.save(new_path, path)
+            logger.info(f"Unpack file {new_path}")
+            shutil.unpack_archive(new_path, extract_dir=f"static/results/{instance.id}")
+
             os.remove(path.name)
+            os.remove(f"{new_path}")
+
+        return instance
+
+
+class AllureReportSerializer(serializers.ModelSerializer):
+    path = serializers.CharField(read_only=True)
+    id = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = AllureReport
+        fields = ('id', 'result_id', 'env', 'service_name', 'path')
+
+    def create(self, validated_data):
+        logger.info(f"Generating report: {validated_data}")
+
+        result_id = validated_data.get('result_id', None)
+        validated_data["path"] = f"static/reports/{result_id}/index.html"
+
+        instance = super(AllureReportSerializer, self).create(validated_data)
+
+        if result_id:
+            os.system(
+                f'allure generate --report-path static/results/{result_id} --report-dir static/reports/{result_id}')
 
         return instance
