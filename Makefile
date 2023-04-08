@@ -35,8 +35,7 @@ help:
 .PHONY: run
 run: ## Run as a background service
 	docker-compose down
-	docker-compose up --build allure-server
-	make migrate
+	docker-compose up --build --detach allure-server
 	make docker-superuser
 
 ## Applies migrations

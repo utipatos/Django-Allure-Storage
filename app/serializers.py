@@ -1,11 +1,7 @@
 import logging
 import os
 import shutil
-import uuid
 
-from django.core.files.uploadedfile import UploadedFile
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from rest_framework import serializers
 
 from app.models import AllureResult, AllureReport
@@ -50,7 +46,7 @@ class AllureReportSerializer(serializers.ModelSerializer):
         logger.info(f"Generating report: {validated_data}")
 
         result_id = validated_data.get('result_id', None)
-        validated_data["path"] = f"static/reports/{result_id}/index.html"
+        validated_data["path"] = f"/static/reports/{result_id}/index.html"
 
         instance = super(AllureReportSerializer, self).create(validated_data)
 

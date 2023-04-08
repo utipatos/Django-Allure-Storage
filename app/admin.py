@@ -18,6 +18,9 @@ class AllureResultAdmin(admin.ModelAdmin):
 class AllureReportAdmin(admin.ModelAdmin):
     readonly_fields = ('created_date', 'updated_date')
     list_display = ('id', 'result_id', 'service_name', 'env', 'path_link')
+    list_filter = ['service_name', 'env']
 
     def path_link(self, instance):
-        return format_html(f"<a href='{instance.path}'>{instance.path}</a>")
+        return format_html(f"<a href='{instance.path}'>View report</a>")
+
+    path_link.short_description = 'Report url'
