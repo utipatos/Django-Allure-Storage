@@ -15,9 +15,8 @@ class AllureResult(models.Model):
 
 class AllureReport(models.Model):
     service_name = models.CharField(max_length=100)
+    result_id = models.CharField(max_length=100)
     env = models.CharField(max_length=20)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     path = models.CharField(max_length=100)
-
-    result = models.OneToOneField(AllureResult, on_delete=models.CASCADE, related_name="result_info")
