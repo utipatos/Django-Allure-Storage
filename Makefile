@@ -36,6 +36,7 @@ help:
 run: ## Run as a background service
 	docker-compose down
 	docker-compose up --build --detach allure-server
+	make migrate
 	make docker-superuser
 
 ## Applies migrations
