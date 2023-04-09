@@ -36,6 +36,14 @@ help:
 run: ## Run as a background service
 	docker-compose down
 	docker-compose up --build --detach allure-server
+	make makemigrations
+	make migrate
+	make docker-superuser
+
+## Apply migrations and create superuser
+finish:
+	make makemigrations
+	make migrate
 	make docker-superuser
 
 ## Applies migrations
@@ -52,3 +60,8 @@ makemigrations:
 docker-superuser:
 	@echo "Creating super user..."
 	@docker-compose exec allure-server python3 manage.py createsuperuser --noinput
+
+## docker-compose down
+stop:
+	@echo "Stopping services.."
+	docker-compose down
