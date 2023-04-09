@@ -40,12 +40,12 @@ class AllureReportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AllureReport
-        fields = ('id', 'result_id', 'env', 'service_name', 'path')
+        fields = ('id', 'result', 'env', 'service_name', 'path')
 
     def create(self, validated_data):
         logger.info(f"Generating report: {validated_data}")
 
-        result_id = validated_data.get('result_id', None)
+        result_id = validated_data.get('result').id
         validated_data["path"] = f"/static/reports/{result_id}/index.html"
 
         instance = super(AllureReportSerializer, self).create(validated_data)
