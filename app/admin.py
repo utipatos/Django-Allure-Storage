@@ -16,7 +16,7 @@ class AllureResultAdmin(admin.ModelAdmin):
 
 @admin.register(AllureReport)
 class AllureReportAdmin(admin.ModelAdmin):
-    readonly_fields = ('created_date', 'updated_date')
+    readonly_fields = ('created_date', 'updated_date', 'path')
     list_display = ('id', 'result_id', 'service_name', 'env', 'path_link')
     list_filter = ['service_name', 'env']
 

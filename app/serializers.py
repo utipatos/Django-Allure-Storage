@@ -19,8 +19,8 @@ class AllureResultsSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         path = validated_data.get('path', None)
-        logger.info(f"Storing report with path: {path} and id: {validated_data.get('id')}")
         instance = super(AllureResultsSerializer, self).create(validated_data)
+        logger.info(f"Storing results {path} into directory with id: {instance.id}")
 
         if path:
             new_path = f"static/results/{instance.id}/{path.name}"
