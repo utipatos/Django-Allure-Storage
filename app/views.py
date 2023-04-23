@@ -15,8 +15,8 @@ class ResultListView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
     @swagger_auto_schema(request_body=AllureResultsSerializer,
-                         # responses={201: UploadResults()},
-                         operation_description="Upload allure results")
+                         operation_description="Upload allure results",
+                         tags=["Allure results"])
     def post(self, request):
         logger.debug(f"Upload allure results")
 
@@ -30,8 +30,8 @@ class ResultListView(APIView):
 class ReportListView(APIView):
 
     @swagger_auto_schema(request_body=AllureReportSerializer,
-                         # responses={201: UploadResults()},
-                         operation_description="Generate report")
+                         operation_description="Generate report",
+                         tags=["Allure report"])
     def post(self, request):
         logger.debug(f"POST allure report: {request.data}")
 
