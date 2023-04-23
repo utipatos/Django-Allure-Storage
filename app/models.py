@@ -19,6 +19,10 @@ class AllureResult(models.Model):
             shutil.rmtree(f"static/results/{self.id}")
         except FileNotFoundError as ex:
             logger.error(f"File was not deleted for result: {self.id}:\n{ex}")
+        try:
+            shutil.rmtree(f"static/reports/{self.id}")
+        except FileNotFoundError as ex:
+            logger.error(f"File was not deleted for result: {self.id}:\n{ex}")
         super().delete(*args, **kwargs)
 
 
